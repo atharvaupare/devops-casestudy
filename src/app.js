@@ -12,7 +12,7 @@ app.get('/', (req, res) => {
   res.send('Welcome to EdraLabs Machine Coding Assignment API');
 });
 
-app.use('/api/v1', apiRouter);
+app.use('/api/', apiRouter);
 
 app.use((req, res) => {
   res.status(404).send({ message: 'Route not found' });
