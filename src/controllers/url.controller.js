@@ -3,6 +3,7 @@ const MinHeap = require("heap-js").default; // log(n) insertion, deletion for tt
 const Denque = require("denque"); //storing access times for a url
 const { set } = require("../app");
 
+// config
 const baseUrl = "http://localhost:3000/api/urls"; // TODO: from config/env
 const defaultTTL = parseInt(process.env.DEFAULT_TTL_SECOND) || 120;
 const nanoidAlphabet = process.env.NANOID_ALPHABET;
@@ -46,11 +47,12 @@ function isValidAlias(s) {
 }
 
 function toIsoArray(times) {
-  // works for Denque or plain array
   const arr =
     typeof times.toArray === "function" ? times.toArray() : [...times];
   return arr.map((ts) => new Date(ts).toISOString());
 }
+
+///////////////// CONTROLLERS ////////////////////////
 
 async function shortenUrl(req, res) {
   const { long_url, custom_alias, ttl_seconds } = req.body || {};
@@ -306,7 +308,7 @@ const deleteAlias = (req, res) => {
 
     aliasStore.delete(alias);
 
-    // delete from heap - lazy deletion
+    // delete from heap automatically when it expires
 
     return res.status(200).json({
       success: true,
